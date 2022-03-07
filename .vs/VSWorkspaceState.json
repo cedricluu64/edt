@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\public",
+    "\\src",
+    "\\src\\Controller",
+    "\\src\\Entity",
+    "\\src\\Repository"
+  ],
+  "SelectedNode": "\\src\\Controller\\ProfesseurController.php",
+  "PreviewInSolutionExplorer": false
+}
