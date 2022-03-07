@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://unpkg.com/axios"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<div id="app">
+    <v-app>
+    <v-row>
+        <v-col>
+          <v-sheet height="400">
+            <v-calendar
+              class="calendrier"
+              ref="calendar"
+              :now="today"
+              :value="today"
+              :events="events"
+              color="primary"
+              type="week"
+            ></v-calendar>
+          </v-sheet>
+        </v-col>
+      </v-row>
+    </v-app>
+</div>
+
+<script>
+  new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      data: () => ({
+      today: moment(new Date()).format('YYYY-MM-DD hh:mm'),
+      events: [
+        {
+          name: 'Anglais',
+          start: '2022-03-07 09:00',
+          end: '2022-03-07 10:00',
+        },
+    ],
+    }),
+    mounted () {
+        this.getCours();
+        //this.$refs.calendar.scrollToTime('08:00');
+    },
+    methods: {
+        getCours() {
+            axios.get('http://localhost:8667/api/cours').then((resp) => {
+                console.log(resp);
+                let cours = resp.data;
+                for(let item of cours) {
+                    this.events.push({name: item.matiere.titre, start: moment(item.dateHeureDebut.date).format('YYYY-MM-DD hh:mm'), end: moment(item.dateHeureFin.date).format('YYYY-MM-DD hh:mm')})
+                }
+                console.log(this.events);
+            }).catch((err) => {
+                console.warn(err);
+            });
+        },
+        getSalles() {
+            axios.get('http://localhost:8667/api/salles').then((resp) => {
+
+            }).catch((err) => {
+
+            });
+        }
+    }
+    })
+</script>
+<style scoped>
+    
+
+</style>
+</body>
+</html>
