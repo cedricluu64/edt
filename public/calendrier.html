@@ -13,21 +13,53 @@
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
     <script src="https://unpkg.com/axios"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://kit.fontawesome.com/46b3b76d85.js" crossorigin="anonymous"></script>
 
 <div id="app">
     <v-app>
     <v-row>
-        <v-col>
-          <v-sheet height="400">
+      <v-col class="d-flex align-center justify-around">
+        <v-btn @click="prevWeek" class="mr-5">
+        <v-icon class="mr-3">fas fa-chevron-left</v-icon>
+            SEMAINE PRECEDANTE
+      </v-btn>
+
+      <v-select
+        v-model="type"
+        :items="types"
+        hide-details
+        class="ma-2"
+        label="type"
+      ></v-select>
+
+      <v-btn @click="nextWeek" class="ml-5">
+            SEMAINE SUIVANTE
+        <v-icon class="ml-3">fas fa-chevron-right</v-icon>
+      </v-btn>
+    </v-col>
+
+        <v-col cols="12">
+          <v-sheet height="800">
             <v-calendar
               class="calendrier"
               ref="calendar"
               :now="today"
-              :value="today"
+              :value="value"
               :events="events"
               color="primary"
-              type="week"
-            ></v-calendar>
+              :type="type"
+              locale="fr"
+            >
+            <template v-slot:event="{start, end, event}">
+              <div class="d-flex align-center justify-center" style="height: 100%;">
+                <div class="d-flex flex-column">
+                <span style="margin-left: auto; margin-right: auto;">{{ event.matiere }}</span>
+                <span style="margin-left: auto; margin-right: auto;">{{ event.type + ' S.' + event.salle }}</span>
+                <span style="margin-left: auto; margin-right: auto;">{{ event.professeur }}</span>
+              </div>
+              </div>
+              </template>
+        </v-calendar>
           </v-sheet>
         </v-col>
       </v-row>
@@ -39,18 +71,14 @@
       el: '#app',
       vuetify: new Vuetify(),
       data: () => ({
-      today: moment(new Date()).format('YYYY-MM-DD hh:mm'),
-      events: [
-        {
-          name: 'Anglais',
-          start: '2022-03-07 09:00',
-          end: '2022-03-07 10:00',
-        },
-    ],
+      today: moment(new Date('2022-03-10')).format('YYYY-MM-DD hh:mm'),
+      value: moment(this.today).startOf('week').add(1, "day").toString(),
+      events: [],
+      type: 'week',
+      types: ["week", "day", "month"]
     }),
     mounted () {
         this.getCours();
-        //this.$refs.calendar.scrollToTime('08:00');
     },
     methods: {
         getCours() {
@@ -58,26 +86,34 @@
                 console.log(resp);
                 let cours = resp.data;
                 for(let item of cours) {
-                    this.events.push({name: item.matiere.titre, start: moment(item.dateHeureDebut.date).format('YYYY-MM-DD hh:mm'), end: moment(item.dateHeureFin.date).format('YYYY-MM-DD hh:mm')})
+                    this.events.push({
+                      type: item.type, 
+                      professeur: item.professeur.nom + ' ' + item.professeur.prenom[0] + '.', 
+                      salle: item.salle, 
+                      matiere: item.matiere.titre, 
+                      start: moment(item.dateHeureDebut.date).format('YYYY-MM-DD hh:mm'), 
+                      end: moment(item.dateHeureFin.date).format('YYYY-MM-DD hh:mm')})
                 }
                 console.log(this.events);
             }).catch((err) => {
                 console.warn(err);
             });
         },
-        getSalles() {
-            axios.get('http://localhost:8667/api/salles').then((resp) => {
-
-            }).catch((err) => {
-
-            });
-        }
-    }
+        nextWeek() {
+            this.value = new Date(moment(this.value).add(1, 'week').format('YYYY-MM-DD hh:mm').toString());
+        },
+        prevWeek() {
+            this.value = new Date(moment(this.value).subtract(1, 'week').format('YYYY-MM-DD hh:mm').toString());
+        },
+    },
     })
-</script>
-<style scoped>
-    
 
-</style>
+    
+</script>
+<style>
+
+  
+  </style>
 </body>
 </html>
+
