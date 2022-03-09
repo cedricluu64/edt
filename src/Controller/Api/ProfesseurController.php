@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\Avis;
 use App\Entity\Professeur;
+use App\Entity\Cours;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,7 +56,7 @@ class ProfesseurController extends AbstractController
         return $this->json($professeur->getLesAvis()->toArray(),200);
     }
 
-    #[Route('/{id}/avis', name: 'ajouter_avis', methods: ['POST'])]
+    #[Route('/{id}/avis', name: 'ajouter_avis_prof', methods: ['POST'])]
     #[UniqueEntity(fields:["emailEtudiant", 'professeur'], errorPath: "emailEtudiant", message: "Cet étudiant a déjà noté ce professeur.")]
     public function ajouterAvis(Professeur $professeur = null, Request $request, EntityManagerInterface $em, ValidatorInterface $validator): JsonResponse
     {
