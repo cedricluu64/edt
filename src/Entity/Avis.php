@@ -20,7 +20,7 @@ class Avis implements \JsonSerializable
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'float')]
     #[Assert\Range(min: 0, max: 5, notInRangeMessage: "La note doit être entre 0 et 5")]
     private $note;
 
@@ -31,14 +31,22 @@ class Avis implements \JsonSerializable
     private $emailEtudiant;
 
     #[ORM\ManyToOne(targetEntity: Professeur::class, inversedBy: 'lesAvis')]
-    #[ORM\JoinColumn(nullable: false)]
     private $professeur;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $type;
+
+    #[ORM\ManyToOne(targetEntity: Cours::class, inversedBy: 'avis')]
+
+    private $cours;
 
     public function fromArray(array $data): self{
         $this->note = ($data['note'] ?? $this->note);
         $this->commentaire = ($data['commentaire'] ?? $this->commentaire);
         $this->emailEtudiant = ($data['emailEtudiant'] ?? $this->emailEtudiant);
+        $this->type = ($data['type'] ?? $this->type);
         $this->professeur = ($data['professeur'] ?? $this->professeur);
+        $this->cours = ($data['cours'] ?? $this->cours);
         return $this;
     }
 
@@ -48,12 +56,12 @@ class Avis implements \JsonSerializable
         return $this->id;
     }
 
-    public function getNote(): ?int
+    public function getNote(): ?float
     {
         return $this->note;
     }
 
-    public function setNote(int $note): self
+    public function setNote(float $note): self
     {
         $this->note = $note;
 
@@ -67,7 +75,7 @@ class Avis implements \JsonSerializable
     
     public function jsonSerialize(): mixed
     {
-        return ['id'=> $this->id,'note'=> $this->note,'commentaire'=> $this->commentaire, 'emailEtudiant'=>  $this->emailEtudiant];
+        return ['id'=> $this->id,'type'=> $this->type,'professeur'=>$this->professeur, 'cours'=>$this->cours, 'emailEtudiant'=>  $this->emailEtudiant, 'note'=> $this->note,'commentaire'=> $this->commentaire, ];
     }
 
     public function setCommentaire(string $commentaire): self
@@ -97,6 +105,30 @@ class Avis implements \JsonSerializable
     public function setProfesseur(?Professeur $professeur): self
     {
         $this->professeur = $professeur;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getCours(): ?Cours
+    {
+        return $this->cours;
+    }
+
+    public function setCours(?Cours $cours): self
+    {
+        $this->cours = $cours;
 
         return $this;
     }
