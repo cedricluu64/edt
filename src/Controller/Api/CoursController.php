@@ -47,4 +47,13 @@ class CoursController extends AbstractController
         $em->flush();
         return $this->json($avis, 201);
     }
+
+    #[Route('/{id}/avis', name: 'list_avis', methods: ['GET'])]
+    public function listAvis(Cours $cours = null): JsonResponse
+    {
+        if( is_null($cours)){
+            return $this->json(["message"=>"Ce professeur est introuvable"],404);
+        }
+        return $this->json($cours->getAvis()->toArray(),200);
+    }
 }

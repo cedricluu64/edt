@@ -27,7 +27,9 @@ class Avis implements \JsonSerializable
     #[ORM\Column(type: 'text')]
     private $commentaire;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
+    #[Assert\NotBlank(message: "champ email obligatoire")]
+    #[Assert\Email(message: "email invalide")]
     private $emailEtudiant;
 
     #[ORM\ManyToOne(targetEntity: Professeur::class, inversedBy: 'lesAvis')]
