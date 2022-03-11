@@ -21,6 +21,14 @@
         }
         .btn {
             transition-duration: 0.4s;
+            
+        }
+        .btn-secondary{
+            background-color:#0d00ff;
+            position: absolute;
+            top: 1em;
+            left: 2em;
+
         }
         .btn:hover{
             background-color: #0000ff;
@@ -30,10 +38,12 @@
 </head>
 
 <body>
-    <br><br>
-    <script src="https://unpkg.com/vue@3"></script>
+<script src="https://unpkg.com/vue@3"></script>
     <script src="https://unpkg.com/axios@0.26.0/dist/axios.min.js"></script>
+
     <div id="app" class="container">
+    <a  href="calendrier.html"><button class="btn btn-secondary mt-3">Voir le calendrier <i class="fas fa-calendar-alt"></i></button></a>
+    <br><br>
         <div class="row">
             <div class="col">
                 <h1>Note ton prof</h1>
@@ -54,7 +64,7 @@
             <div v-if="professeurCourant" class="col-5">
             <h1> Saisir un avis pour <br> {{ professeurCourant.prenom + ' ' + professeurCourant.nom}} </h1>
             <p v-for="error in erreurs" style="color:red;"> {{error}}</p>
-            <form class="mn-5 card" v-on:submit.prevent="creerAvis()">
+            <form class="mn-5 card" style="padding: 15px" v-on:submit.prevent="creerAvis()">
                 <div class="form-group">
                     <label>Note</label>
 
@@ -70,7 +80,7 @@
                         <label>Commentaire</label>
                         <textarea class="form-control" v-model="nouvelAvis.commentaire" required></textarea>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-4">
                         <label>Adresse email</label>
                         <input type="email" class="form-control" v-model="nouvelAvis.emailEtudiant" required>
                     </div>
