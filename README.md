@@ -39,7 +39,7 @@ Une panneau d'administration est disponible afin de pouvoir gérer l'emploi du t
 
 Le calendrier permet de voir les cours mais aussi de le noter en cliquant dessus. De plus, vous pourrez noter le professeur en cliquant sur le lien.
 
-Une page permettant de noter son professeur est présente, elle liste tous les professeurs, si vous en choisissez un ces notes apparaitrons et un formulaire de saisi va s'ouvrir
+Une page permettant de noter son professeur est présente, elle liste tous les professeurs, si vous en choisissez un ces notes apparaitrons et un formulaire de saisie va s'ouvrir.
 
 
 
