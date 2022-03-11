@@ -41,6 +41,7 @@ Le calendrier permet de voir les cours mais aussi de le noter en cliquant dessus
 
 Une page permettant de noter son professeur est présente, elle liste tous les professeurs, si vous en choisissez un ces notes apparaitrons et un formulaire de saisie va s'ouvrir.
 
+*** Un jeu de données est présent entre le 07/03/2022 et le 14/03/2022 ***
 
 
 #### Il ne vous reste qu'à utiliser le système via les trois liens suivants:
